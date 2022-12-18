@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import codecs
 
+__all__ = ["find_bom", "detect_bom_encoding"]
+
 # Order does matter here. UTF-32 BOMs must be preceed UTF-16 BOMs.
 BOM_ENCODING = {
     codecs.BOM_UTF32_BE: "utf-32-be",
@@ -24,10 +26,3 @@ def find_bom(data: bytes) -> None | bytes:
 def detect_bom_encoding(data: bytes) -> None | str:
     bom = find_bom(data)
     return BOM_ENCODING[bom] if bom else None
-
-
-def detect_content_encoding(data: bytes) -> str:
-    bom_encoding = detect_bom_encoding(data)
-    if bom_encoding:
-        return bom_encoding
-    return "utf-8"

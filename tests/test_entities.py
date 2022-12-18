@@ -1,4 +1,4 @@
-from unicodec import decode_entities
+from unicodec.entities import decode_entities
 
 
 def test_decode_numeric_entities() -> None:

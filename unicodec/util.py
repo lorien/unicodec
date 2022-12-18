@@ -6,9 +6,18 @@ References:
 from __future__ import annotations
 
 from . import entities
-from .encoding import detect_content_encoding
+from .bom_encoding import detect_bom_encoding
+from .html_encoding import detect_html_encoding
 
-__all__ = ["decode_content"]
+__all__ = ["decode_content", "detect_content_encoding"]
+
+
+def detect_content_encoding(data: bytes) -> str:
+    for func in [detect_bom_encoding, detect_html_encoding]:
+        enc = func(data)
+        if enc:
+            return enc
+    return "utf-8"
 
 
 def decode_content(
