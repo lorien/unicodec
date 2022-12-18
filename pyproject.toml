@@ -2,7 +2,7 @@
 name = "unicodec"
 version = "0.0.3"
 
-description = ""
+description = "Tools to convert bytes content into unicode."
 readme = "README.md"
 requires-python = ">=3.8"
 license = {"file" = "LICENSE"}
@@ -30,6 +30,7 @@ classifiers = [
 dependencies = []
 
 [project.urls]
+homepage = "http://github.com/lorien/unicodec"
 
 [build-system]
 requires = ["setuptools"]

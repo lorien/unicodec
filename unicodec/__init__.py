@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .entities import decode_entities
 from .util import decode_content
 

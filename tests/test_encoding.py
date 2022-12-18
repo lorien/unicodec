@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import codecs
 
 from unicodec.encoding import detect_bom_encoding

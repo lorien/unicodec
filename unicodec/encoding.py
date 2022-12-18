@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import codecs
 
 # Order does matter here. UTF-32 BOMs must be preceed UTF-16 BOMs.
