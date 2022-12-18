@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from unicodec.html_encoding import detect_html_encoding
