@@ -1,7 +1,7 @@
-.PHONY: bootstrap venv deps dirs clean test release mypy pylint flake8 bandit check build coverage
+.PHONY: bootstrap venv deps dirs clean pytest test release mypy pylint flake8 bandit check build coverage
 
-FILES_CHECK_MYPY = unicodec
-FILES_CHECK_ALL = $(FILES_CHECK_MYPY) tests
+FILES_CHECK_MYPY = unicodec tests
+FILES_CHECK_ALL = $(FILES_CHECK_MYPY)
 
 bootstrap: venv deps dirs
 
@@ -21,9 +21,11 @@ clean:
 	find -name '*.swp' -delete
 	find -name '__pycache__' -delete
 
-test:
+pytest:
 	pytest --cov unicodec --cov-report term-missing
-	coverage lcov -o .coverage.lcov
+
+test:
+	make check && make pytest
 
 release:
 	make build \

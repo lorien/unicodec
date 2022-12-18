@@ -25,7 +25,8 @@ jobs:
 
     - name: Run tests
       run: |
-        make test
+        make pytest
+        coverage lcov -o .coverage.lcov
 
 #    - name: Coveralls Parallel
 #      uses: coverallsapp/github-action@master
