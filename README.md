@@ -1,5 +1,11 @@
 # Unicodec Package Documentation
 
+[![Test Status](https://github.com/lorien/unicodec/actions/workflows/test.yml/badge.svg)](https://github.com/lorien/unicodec/actions/workflows/test.yml)
+[![Code Quality](https://github.com/lorien/unicodec/actions/workflows/check.yml/badge.svg)](https://github.com/lorien/unicodec/actions/workflows/test.yml)
+[![Type Check](https://github.com/lorien/unicodec/actions/workflows/mypy.yml/badge.svg)](https://github.com/lorien/unicodec/actions/workflows/mypy.yml)
+[![Test Coverage Status](https://coveralls.io/repos/github/lorien/unicodec/badge.svg)](https://coveralls.io/github/lorien/unicodec)
+[![Documentation Status](https://readthedocs.org/projects/unicodec/badge/?version=latest)](http://user-agent.readthedocs.org)
+
 The unicodec package provides functions to decode bytes content of HTML documents into unicode content.
 
 # Installation

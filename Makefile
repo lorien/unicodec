@@ -28,10 +28,10 @@ test:
 	make check && make pytest
 
 release:
-	make build \
+	git push \
+	&& git push --tags \
+	&& make build \
 	&& twine upload dist/*
-	#git push \
-	#&& git push --tags \
 
 mypy:
 	mypy --strict $(FILES_CHECK_MYPY)
