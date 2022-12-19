@@ -34,7 +34,7 @@ def test_normalize_encoding_empty_string() -> None:
         ("ascii", "windows-1252"),
         # typo
         ("uft-8", "utf-8"),
-        # whatwg label
+        # whatwg canonical
         ("iso8859-1", "windows-1252"),
         ("iso-8859-1", "windows-1252"),
     ],

@@ -20,12 +20,9 @@ EXCEPTIONAL_ENCODINGS = {
     "utf8_general_ci": "utf-8",
 }
 SUPERSET_ENCODINGS = {
-    # https://en.wikipedia.org/wiki/GBK_(character_encoding)
+    # https://github.com/lorien/unicodec
     "gbk": "gb18030",
-    # https://en.wikipedia.org/wiki/GB_2312
     "gb2312": "gb18030",
-    # https://en.wikipedia.org/wiki/ASCII + WHATWG
-    "ascii": "cp1252",
 }
 WHATWG_ALIASES = {
     # UTF-8 / The Encoding
@@ -303,6 +300,7 @@ def normalize_encoding_name(name: str) -> str:
     name = EXCEPTIONAL_ENCODINGS.get(name, name)
     name = WHATWG_ALIASES.get(name, name)
     name = WHATWG_PYTHON_CODEC_FIXES.get(name, name)
+    name = SUPERSET_ENCODINGS.get(name, name)
     try:
         codec_name = codecs.lookup(name).name
         # Use codec name only if it is not an alias in WHATWG table
@@ -312,4 +310,4 @@ def normalize_encoding_name(name: str) -> str:
     except LookupError as ex:
         raise InvalidEncodingName("Invalid encoding name: {}".format(name)) from ex
     else:
-        return SUPERSET_ENCODINGS.get(name, name)
+        return name
