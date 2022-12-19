@@ -65,7 +65,7 @@ Output:
 koi8-r
 ```
 
-### Usage Exaple #3
+### Usage Example #3
 
 Convert names of encodings to canonical form (according to WHATWG HTML standard).
 
