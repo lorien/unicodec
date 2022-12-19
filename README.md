@@ -23,3 +23,4 @@ Telegram Russian chat: [https://t.me/grablab\_ru](https://t.me/grablab_ru)
 - https://docs.python.org/3/library/html.html
 - https://docs.python.org/3/library/html.entities.html
 - https://html.spec.whatwg.org/multipage/parsing.html
+- https://encoding.spec.whatwg.org/

@@ -11,7 +11,7 @@ from contextlib import suppress
 from re import Match
 
 from .errors import InvalidEncodingName
-from .util import normalize_encoding_name
+from .normalization import normalize_encoding_name
 
 __all__ = ["detect_html_encoding"]
 

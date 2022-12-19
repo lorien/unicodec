@@ -11,7 +11,7 @@ from . import entities
 from .bom_encoding import detect_bom_encoding
 from .errors import InvalidEncodingName
 from .html_encoding import detect_html_encoding
-from .util import normalize_encoding_name
+from .normalization import normalize_encoding_name
 
 __all__ = ["decode_content", "detect_content_encoding"]
 

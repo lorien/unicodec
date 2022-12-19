@@ -19,19 +19,20 @@ def test_detect_content_encoding_bom_data() -> None:
 
 def test_detect_content_encoding_bom_meta_charset() -> None:
     assert (
-        detect_content_encoding(codecs.BOM_UTF16_LE + b'<meta charset="cp1251">')
+        detect_content_encoding(codecs.BOM_UTF16_LE + b'<meta charset="windows-1251">')
         == "utf-16-le"
     )
 
 
 def test_detect_content_encoding_meta_charset() -> None:
-    assert detect_content_encoding(b'<meta charset="cp1251">') == "cp1251"
+    assert detect_content_encoding(b'<meta charset="windows-1251">') == "windows-1251"
 
 
 def test_detect_content_encoding_http_equiv_charset() -> None:
     assert (
         detect_content_encoding(
-            b'<meta http-equiv="content-type" content="text/html; charset=cp1251">'
+            b'<meta http-equiv="content-type" content="text/html'
+            b'; charset=windows-1251">'
         )
-        == "cp1251"
+        == "windows-1251"
     )
