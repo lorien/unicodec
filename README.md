@@ -11,15 +11,11 @@ This package provides functions for:
 - detecting encoding of bytes content of HTML document
 - normalization of encoding's name to canonical form, according to WHATWG HTML standard
 
+Feel free to give feedback in Telegram groups: [@grablab](https://t.me/grablab) and [@grablab\_ru](https://t.me/grablab_ru).
+
 ## Installation
 
 `pip install -U unicodec`
-
-## Community
-
-Telegram English chat: [https://t.me/grablab](https://t.me/grablab)
-
-Telegram Russian chat: [https://t.me/grablab\_ru](https://t.me/grablab_ru)
 
 ## Usage Example #1
 
