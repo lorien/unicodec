@@ -17,18 +17,18 @@ __all__ = ["detect_html_encoding"]
 
 RE_HTML_XML_ENCODING = re.compile(
     r"<meta \s+ (?:"
-    r"  charset \s* = \s* ['\"]? (?P<meta_charset>[^'\"\s>]+)"
+    r"  charset \s* = \s* ['\"]? (?P<meta_charset>[-_a-z0-9]+)"
     r"  |"
     r"  [^>]* http-equiv \s* = \s* ['\"]? content-type ['\"]?"
     r"    [^>]+ content \s* = \s* ['\"]? [^'\"\s>]+"
-    r"    ; \s* charset=(?P<http_equiv1>[^'\";\s>]+)"
+    r"    ; \s* charset=(?P<http_equiv1>[-_a-z0-9]+)"
     r"  |"
     r"  [^>]* content \s* = \s* ['\"]? [^'\"\s>]+ "
-    r"    ; \s* charset=(?P<http_equiv2>[^'\";\s>]+)"
+    r"    ; \s* charset=(?P<http_equiv2>[-_a-z0-9]+)"
     r"    [^>]+ http-equiv \s* = \s* ['\"]? content-type ['\"]?"
     r")"
     r"|"
-    r"<\?xml \s+ [^>]* encoding \s* = \s* ['\"] (?P<xml>[^'\"\s>]+)",
+    r"<\?xml \s+ [^>]* encoding \s* = \s* ['\"] (?P<xml>[-_a-z-0-9]+)",
     re.X | re.I,
 )
 RE_BYTES_HTML_XML_ENCODING = re.compile(
