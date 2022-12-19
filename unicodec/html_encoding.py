@@ -7,7 +7,11 @@ References:
 from __future__ import annotations
 
 import re
+from contextlib import suppress
 from re import Match
+
+from .errors import InvalidEncodingName
+from .util import normalize_encoding_name
 
 __all__ = ["detect_html_encoding"]
 
@@ -17,10 +21,10 @@ RE_HTML_XML_ENCODING = re.compile(
     r"  |"
     r"  [^>]* http-equiv \s* = \s* ['\"]? content-type ['\"]?"
     r"    [^>]+ content \s* = \s* ['\"]? [^'\"\s>]+"
-    r"    ; \s* charset=(?P<http_equiv1>[^'\"\s>]+)"
+    r"    ; \s* charset=(?P<http_equiv1>[^'\";\s>]+)"
     r"  |"
     r"  [^>]* content \s* = \s* ['\"]? [^'\"\s>]+ "
-    r"    ; \s* charset=(?P<http_equiv2>[^'\"\s>]+)"
+    r"    ; \s* charset=(?P<http_equiv2>[^'\";\s>]+)"
     r"    [^>]+ http-equiv \s* = \s* ['\"]? content-type ['\"]?"
     r")"
     r"|"
@@ -46,5 +50,8 @@ def detect_html_encoding(data: bytes | str) -> None | str:
             or match.group("http_equiv2")
             or match.group("xml")
         )
-        return enc.decode("latin-1") if isinstance(enc, bytes) else enc
+        with suppress(InvalidEncodingName):
+            return normalize_encoding_name(
+                enc.decode("latin-1") if isinstance(enc, bytes) else enc
+            )
     return None

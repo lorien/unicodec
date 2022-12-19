@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import codecs
 
-from unicodec.util import detect_content_encoding
+from unicodec import detect_content_encoding
 
 
 def test_detect_content_encoding_empty_data() -> None:

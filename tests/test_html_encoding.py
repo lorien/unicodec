@@ -70,3 +70,36 @@ def test_detect_html_encoding_http_equiv_reversed(data: bytes | str) -> None:
 )
 def test_detect_html_encoding_xml(data: bytes | str) -> None:
     assert detect_html_encoding(data) == "cp1251"
+
+
+@pytest.mark.parametrize(
+    "data",
+    extend_with_bytes(
+        [
+            '<meta content="text/html; charset=CP1251" http-equiv="content-type">',
+            '<meta http-equiv="content-type" content="text/html; charset=CP1251">',
+            '<meta charset="CP1251">',
+        ]
+    ),
+)
+def test_detect_html_encoding_upper_case(data: bytes | str) -> None:
+    assert detect_html_encoding(data) == "cp1251"
+
+
+def test_detect_html_encoding_http_equiv_multiple_tokens() -> None:
+    assert (
+        detect_html_encoding(
+            '<meta http-equiv="content-type" content="text/html'
+            '; charset=cp1251;charset=cp1251">'
+        )
+        == "cp1251"
+    )
+
+
+def test_detect_html_encoding_http_equiv_nospace() -> None:
+    assert (
+        detect_html_encoding(
+            '<meta http-equiv="content-type" content="text/html;charset=cp1251">'
+        )
+        == "cp1251"
+    )

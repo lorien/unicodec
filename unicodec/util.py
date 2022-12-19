@@ -1,37 +1,24 @@
-"""Functions to decode HTML bytes content into unicode string.
+import codecs
 
-References:
-- https://html.spec.whatwg.org/multipage/parsing.html
-"""
-from __future__ import annotations
+from .errors import InvalidEncodingName
 
-from . import entities
-from .bom_encoding import detect_bom_encoding
-from .html_encoding import detect_html_encoding
-
-__all__ = ["decode_content", "detect_content_encoding"]
-
-
-def detect_content_encoding(data: bytes) -> str:
-    for func in [detect_bom_encoding, detect_html_encoding]:
-        enc = func(data)
-        if enc:
-            return enc
-    return "utf-8"
+EXCEPTIONAL_ENCODINGS = {
+    # https://dev.mysql.com/doc/refman/8.0/en/charset-unicode-sets.html
+    "utf8mb4": "utf-8",  # I have no idea what I am doing
+}
+SUPERSET_ENCODINGS = {
+    # https://en.wikipedia.org/wiki/GBK_(character_encoding)
+    "gbk": "gb18030",
+    # https://en.wikipedia.org/wiki/GB_2312
+    "gb2312": "gb18030",
+}
 
 
-def decode_content(
-    data: bytes | str,
-    decode_entities: bool = True,
-    remove_null_bytes: bool = True,
-    encoding: None | str = None,
-) -> str:
-    if isinstance(data, bytes):
-        if encoding is None:
-            encoding = detect_content_encoding(data)
-        data = data.decode(encoding)
-    if remove_null_bytes:
-        data = data.replace("\x00", "")
-    if decode_entities:
-        data = entities.decode_entities(data)
-    return data  # noqa: R504 unnecessary variable assignment
+def normalize_encoding_name(name: str) -> str:
+    name = EXCEPTIONAL_ENCODINGS.get(name, name)
+    try:
+        name = codecs.lookup(name).name
+    except LookupError as ex:
+        raise InvalidEncodingName("Invalid encoding name: {}".format(name)) from ex
+    else:
+        return SUPERSET_ENCODINGS.get(name, name)
