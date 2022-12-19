@@ -11,7 +11,7 @@ This package provides functions for:
 - detecting encoding of bytes content of HTML document
 - normalization of encoding's name to canonical form, according to WHATWG HTML standard
 
-# Installation
+## Installation
 
 `pip install -U unicodec`
 
@@ -65,7 +65,7 @@ Output:
 koi8-r
 ```
 
-### Usage Example #3
+## Usage Example #3
 
 Convert names of encodings to canonical form (according to WHATWG HTML standard).
 
