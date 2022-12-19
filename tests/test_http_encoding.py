@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from unicodec.http_encoding import parse_content_type_header_encoding

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 
 RE_CONTENT_TYPE_CHARSET = re.compile(
