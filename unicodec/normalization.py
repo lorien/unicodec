@@ -1,3 +1,9 @@
+"""Functions to normalize encoding names to canonical names.
+
+References:
+- https://encoding.spec.whatwg.org/#names-and-labels
+- https://www.i18nqa.com/debug/table-iso8859-1-vs-windows-1252.html
+"""
 import codecs
 
 from .errors import InvalidEncodingName
@@ -21,7 +27,6 @@ SUPERSET_ENCODINGS = {
     # https://en.wikipedia.org/wiki/ASCII + WHATWG
     "ascii": "cp1252",
 }
-# https://encoding.spec.whatwg.org/#names-and-labels
 WHATWG_ALIASES = {
     # UTF-8 / The Encoding
     "unicode-1-1-utf-8": "utf-8",
@@ -283,6 +288,13 @@ WHATWG_ALIASES = {
     "utf-16": "utf-16le",
     "utf-16le": "utf-16le",
 }
+# Set of WHATWG encoding names which are not recognized
+# by python codecs module
+WHATWG_PYTHON_CODEC_FIXES = {
+    "windows-874": "cp874",
+    "x-mac-cyrillic": "mac-cyrillic",
+    "iso-8859-8-i": "iso-8859-8",
+}
 
 
 def normalize_encoding_name(name: str) -> str:
@@ -290,9 +302,11 @@ def normalize_encoding_name(name: str) -> str:
     name = COMMON_TYPOS.get(name, name)
     name = EXCEPTIONAL_ENCODINGS.get(name, name)
     name = WHATWG_ALIASES.get(name, name)
+    name = WHATWG_PYTHON_CODEC_FIXES.get(name, name)
     try:
         codec_name = codecs.lookup(name).name
         # Use codec name only if it is not an alias in WHATWG table
+        # because unicodec library gives priority to WHATWG names
         if codec_name not in WHATWG_ALIASES:
             name = codec_name
     except LookupError as ex:

@@ -1,7 +1,13 @@
+import codecs
+
 import pytest
 
 from unicodec.errors import InvalidEncodingName
-from unicodec.normalization import normalize_encoding_name
+from unicodec.normalization import (
+    WHATWG_ALIASES,
+    WHATWG_PYTHON_CODEC_FIXES,
+    normalize_encoding_name,
+)
 
 
 def test_normalize_encoding_invalid_name() -> None:
@@ -35,3 +41,10 @@ def test_normalize_encoding_empty_string() -> None:
 )
 def test_normalize_encoding(test_name: str, correct_name: str) -> None:
     assert normalize_encoding_name(test_name) == correct_name
+
+
+@pytest.mark.parametrize(
+    "name", set(WHATWG_ALIASES.values()) - set(WHATWG_PYTHON_CODEC_FIXES.keys())
+)
+def test_whatwg_engocing_names_support(name: str) -> None:
+    assert isinstance(codecs.lookup(name), codecs.CodecInfo)
