@@ -6,6 +6,7 @@ References:
 from __future__ import annotations
 
 from contextlib import suppress
+from typing import Literal
 
 from . import entities
 from .bom_encoding import detect_bom_encoding
@@ -13,11 +14,16 @@ from .errors import InvalidEncodingName
 from .html_encoding import detect_html_encoding
 from .http_encoding import parse_content_type_header_encoding
 from .normalization import normalize_encoding_name
+from .xml_encoding import detect_xml_encoding
 
 __all__ = ["decode_content", "detect_content_encoding"]
 
 
-def detect_content_encoding(data: bytes, content_type_header: None | str = None) -> str:
+def detect_content_encoding(
+    data: bytes,
+    content_type_header: None | str = None,
+    markup: Literal["html"] | Literal["xml"] = "html",
+) -> str:
     enc = detect_bom_encoding(data)
     if enc:
         with suppress(InvalidEncodingName):
@@ -27,7 +33,7 @@ def detect_content_encoding(data: bytes, content_type_header: None | str = None)
         if enc:
             with suppress(InvalidEncodingName):
                 return normalize_encoding_name(enc)
-    enc = detect_html_encoding(data)
+    enc = detect_html_encoding(data) if markup == "html" else detect_xml_encoding(data)
     if enc:
         with suppress(InvalidEncodingName):
             return normalize_encoding_name(enc)
@@ -40,10 +46,13 @@ def decode_content(
     remove_null_bytes: bool = True,
     encoding: None | str = None,
     content_type_header: None | str = None,
+    markup: Literal["html"] | Literal["xml"] = "html",
 ) -> str:
     if isinstance(data, bytes):
         if encoding is None:
-            encoding = detect_content_encoding(data, content_type_header)
+            encoding = detect_content_encoding(
+                data, content_type_header=content_type_header, markup=markup
+            )
         data = data.decode(encoding)
     if remove_null_bytes:
         data = data.replace("\x00", "")

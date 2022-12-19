@@ -15,7 +15,7 @@ from .normalization import normalize_encoding_name
 
 __all__ = ["detect_html_encoding"]
 
-RE_HTML_XML_ENCODING = re.compile(
+RE_HTML_ENCODING = re.compile(
     r"<meta \s+ (?:"
     r"  charset \s* = \s* ['\"]? (?P<meta_charset>[-_a-z0-9]+)"
     r"  |"
@@ -28,27 +28,25 @@ RE_HTML_XML_ENCODING = re.compile(
     r"    [^>]+ http-equiv \s* = \s* ['\"]? content-type ['\"]?"
     r")"
     r"|"
-    r"<\?xml \s+ [^>]* encoding \s* = \s* ['\"] (?P<xml>[-_a-z-0-9]+)",
+    r"<\?xml \s+ [^>]* encoding \s* = \s* ['\"] (?P<xml_prolog>[-_a-z-0-9]+)",
     re.X | re.I,
 )
-RE_BYTES_HTML_XML_ENCODING = re.compile(
-    RE_HTML_XML_ENCODING.pattern.encode(), re.X | re.I
-)
+RE_BYTES_HTML_ENCODING = re.compile(RE_HTML_ENCODING.pattern.encode(), re.X | re.I)
 
 
 def detect_html_encoding(data: bytes | str) -> None | str:
     match: None | Match[str] | Match[bytes]
     match = (
-        RE_BYTES_HTML_XML_ENCODING.search(data)
+        RE_BYTES_HTML_ENCODING.search(data)
         if isinstance(data, bytes)
-        else RE_HTML_XML_ENCODING.search(data)
+        else RE_HTML_ENCODING.search(data)
     )
     if match:
         enc = (
             match.group("meta_charset")
             or match.group("http_equiv1")
             or match.group("http_equiv2")
-            or match.group("xml")
+            or match.group("xml_prolog")
         )
         with suppress(InvalidEncodingName):
             return normalize_encoding_name(

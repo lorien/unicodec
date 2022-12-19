@@ -4,9 +4,7 @@ import pytest
 
 from unicodec.html_encoding import detect_html_encoding
 
-
-def extend_with_bytes(items: list[str]) -> list[str | bytes]:
-    return items + [x.encode() for x in items]
+from .util import extend_with_bytes
 
 
 def test_detect_html_encoding_empty_bytes() -> None:
