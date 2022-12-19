@@ -4,9 +4,12 @@
 [![Code Quality](https://github.com/lorien/unicodec/actions/workflows/check.yml/badge.svg)](https://github.com/lorien/unicodec/actions/workflows/test.yml)
 [![Type Check](https://github.com/lorien/unicodec/actions/workflows/mypy.yml/badge.svg)](https://github.com/lorien/unicodec/actions/workflows/mypy.yml)
 [![Test Coverage Status](https://coveralls.io/repos/github/lorien/unicodec/badge.svg)](https://coveralls.io/github/lorien/unicodec)
-[![Documentation Status](https://readthedocs.org/projects/unicodec/badge/?version=latest)](http://user-agent.readthedocs.org)
 
-The unicodec package provides functions to decode bytes content of HTML documents into unicode content.
+This package provides functions for:
+
+- decoding bytes content of HTML document into Unicode text
+- detecting encoding of bytes content of HTML document
+- normalization of encoding's name to canonical form, according to WHATWG HTML standard
 
 # Installation
 
@@ -17,6 +20,69 @@ The unicodec package provides functions to decode bytes content of HTML document
 Telegram English chat: [https://t.me/grablab](https://t.me/grablab)
 
 Telegram Russian chat: [https://t.me/grablab\_ru](https://t.me/grablab_ru)
+
+## Usage Example #1
+
+Download web document with urllib and convert its content to Unicode.
+
+```python
+from urllib.request import urlopen
+
+from unicodec import decode_content, detect_content_encoding
+
+res = urlopen("http://lib.ru")
+rawdata = res.read()
+data = decode_content(rawdata, content_type_header=res.headers["content-type"])
+print(data[:70])
+print(detect_content_encoding(rawdata, res.headers["content-type"]))
+```
+
+Output:
+```
+<html><head><title>Lib.Ru: Библиотека Максима Мошкова</title></head><b
+koi8-r
+```
+
+## Usage Example #2
+
+Download web document with urllib3 and convert its content to Unicode.
+
+```python
+from urllib3 import PoolManager
+
+from unicodec import decode_content, detect_content_encoding
+
+res = PoolManager().urlopen("GET", "http://lib.ru")
+rawdata = res.data
+data = decode_content(rawdata, content_type_header=res.headers["content-type"])
+print(data[:70])
+print(detect_content_encoding(rawdata, res.headers["content-type"]))
+```
+
+Output:
+```
+<html><head><title>Lib.Ru: Библиотека Максима Мошкова</title></head><b
+koi8-r
+```
+
+### Usage Exaple #3
+
+Convert names of encodings to canonical form (according to WHATWG HTML standard).
+
+```python
+from unicodec.normalization import normalize_encoding_name
+
+for name in ["iso8859-1", "utf8", "cp1251"]:
+    print("{} -> {}".format(name, normalize_encoding_name(name)))
+```
+
+Output:
+
+```
+iso8859-1 -> windows-1252
+utf8 -> utf-8
+cp1251 -> windows-1251
+```
 
 ## References
 
