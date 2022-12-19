@@ -17,13 +17,6 @@ def test_detect_content_encoding_bom_data() -> None:
     assert detect_content_encoding(codecs.BOM_UTF16_LE + b"asdf") == "utf-16-le"
 
 
-def test_detect_content_encoding_bom_meta_charset() -> None:
-    assert (
-        detect_content_encoding(codecs.BOM_UTF16_LE + b'<meta charset="windows-1251">')
-        == "utf-16-le"
-    )
-
-
 def test_detect_content_encoding_meta_charset() -> None:
     assert detect_content_encoding(b'<meta charset="windows-1251">') == "windows-1251"
 
@@ -35,4 +28,30 @@ def test_detect_content_encoding_http_equiv_charset() -> None:
             b'; charset=windows-1251">'
         )
         == "windows-1251"
+    )
+
+
+def test_detect_content_encoding_bom_and_html() -> None:
+    assert (
+        detect_content_encoding(codecs.BOM_UTF16_LE + b'<meta charset="windows-1251">')
+        == "utf-16-le"
+    )
+
+
+def test_detect_content_encoding_http_and_html() -> None:
+    assert (
+        detect_content_encoding(
+            b'<meta charset="windows-1251">', content_type_header="charset=utf-8"
+        )
+        == "utf-8"
+    )
+
+
+def test_detect_content_encoding_bom_and_http_and_html() -> None:
+    assert (
+        detect_content_encoding(
+            codecs.BOM_UTF16_LE + b'<meta charset="windows-1251">',
+            content_type_header="charset=windows-1252",
+        )
+        == "utf-16-le"
     )
