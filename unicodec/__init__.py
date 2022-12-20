@@ -10,4 +10,4 @@ __all__ = [
     "InvalidEncodingName",
     "normalize_encoding_name",
 ]
-__version__ = "0.0.7"
+__version__ = "0.0.8"
