@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="unicodec",
-    version="0.1.0",
+    version="0.1.1",
     packages=["unicodec"],
     install_requires=[
         "six",
