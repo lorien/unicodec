@@ -16,7 +16,13 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -U -r requirements_dev.txt
-        pip install .
+
+    - name: Build project wheel and install
+      run: |
+        make build
+        mv unicodec backup_unicodec
+        mv dist/*.whl dist/unicodec-0.0.1-py2.py3-none-any.whl
+        pip install -U "unicodec @ file://$(pwd)/dist/unicodec-0.0.1-py2.py3-none-any.whl"
 
     - name: Run tests
       run: |
@@ -41,7 +47,13 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -U -r requirements_dev.txt
-        pip install .
+
+    - name: Build project wheel and install
+      run: |
+        make build
+        mv unicodec backup_unicodec
+        mv dist/*.whl dist/unicodec-0.0.1-py2.py3-none-any.whl
+        pip install -U "unicodec @ file://$(pwd)/dist/unicodec-0.0.1-py2.py3-none-any.whl"
 
     - name: Run tests
       run: |
