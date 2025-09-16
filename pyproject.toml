@@ -2,7 +2,7 @@
 name = "unicodec"
 version = "0.0.8"
 
-description = "Tools to convert bytes content into unicode."
+description = "Library for decoding bytes content into unicode"
 readme = "README.md"
 requires-python = ">=2.7"
 license = "MIT"

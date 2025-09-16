@@ -1,28 +1,25 @@
 name: Linters
 
-on: [push]
+on: ["push", "pull_request"]
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python: ['3.8', '3.9', '3.10', '3.11']
+    runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v3
+    - name: Checkout project
+      uses: actions/checkout@v5
 
-    - name: Set up Python ${{ matrix.python }}
-      uses: actions/setup-python@v4
+    - name: Install python
+      uses: actions/setup-python@v6
       with:
-        python-version: ${{ matrix.python }}
+        python-version: 3.13
 
     - name: Install dependencies
       run: |
-        pip install -U -r requirements.txt
+        pip install -U -r requirements_dev.txt
         pip install -U -e .
 
-    - name: Run tests
-      run: |
-        make pylint && make flake8 && make bandit
+    - run: make ruff
+    - run: make pylint
+    - run: make mypy

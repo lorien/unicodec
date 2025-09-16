@@ -14,7 +14,7 @@ py3-venv:
 	virtualenv -p python3 $(PY3_VENV)
 
 py3-deps:
-	$(PY3_VENV)/bin/pip install -r requirements.txt
+	$(PY3_VENV)/bin/pip install -r requirements_dev.txt
 	$(PY3_VENV)/bin/pip install .
 
 # PY2
@@ -25,7 +25,7 @@ py2-venv:
 	$(PY2_ROOT)/bin/virtualenv --python=$(PY2_ROOT)/bin/python2.7 $(PY2_VENV)
 	
 py2-deps:
-	$(PY2_VENV)/bin/pip install -r requirements.txt
+	$(PY2_VENV)/bin/pip install -r requirements_dev.txt
 	$(PY2_VENV)/bin/pip install .
 
 
