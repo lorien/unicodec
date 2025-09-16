@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .errors import InvalidEncodingName, InvalidEncodingNameError
 from .main import decode_content, detect_content_encoding
 from .normalization import normalize_encoding_name

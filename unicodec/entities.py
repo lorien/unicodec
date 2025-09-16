@@ -1,7 +1,14 @@
-import html
-
 __all__ = ["decode_entities"]
 
+try:
+    from html import unescape
+except ImportError:
+    from HTMLParser import HTMLParser
 
-def decode_entities(inp: str) -> str:
-    return html.unescape(inp)
+    html_parser = HTMLParser()
+    unescape = html_parser.unescape
+
+
+def decode_entities(inp):
+    # type: (str) -> str
+    return unescape(inp)

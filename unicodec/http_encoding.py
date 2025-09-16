@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import re
 
 RE_CONTENT_TYPE_CHARSET = re.compile(
@@ -7,7 +5,8 @@ RE_CONTENT_TYPE_CHARSET = re.compile(
 )
 
 
-def parse_content_type_header_encoding(content_type_header: str) -> None | str:
+def parse_content_type_header_encoding(content_type_header):
+    # type: (str) -> None | str
     match = RE_CONTENT_TYPE_CHARSET.search(content_type_header)
     if match:
         return match.group(1)

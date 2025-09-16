@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import pytest
 
 from unicodec.http_encoding import parse_content_type_header_encoding
@@ -14,5 +12,6 @@ from unicodec.http_encoding import parse_content_type_header_encoding
         ('charset="utf-8"', "utf-8"),
     ],
 )
-def test_parse_content_type_header_encoding(header: str, encoding: None | str) -> None:
+def test_parse_content_type_header_encoding(header, encoding):
+    # type: (str, None | str) -> None
     assert parse_content_type_header_encoding(header) == encoding

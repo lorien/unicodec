@@ -154,10 +154,10 @@ WHATWG_ALIASES = {
     "koi8-ru": "koi8-u",
     "koi8-u": "koi8-u",
     # macintosh / Legacy single-byte encodings
-    "csmacintosh": "macintosh",
-    "mac": "macintosh",
-    "macintosh": "macintosh",
-    "x-mac-roman": "macintosh",
+    "csmacintosh": "mac_roman",
+    "mac": "mac_roman",
+    "macintosh": "mac_roman",
+    "x-mac-roman": "mac_roman",
     # windows-874 / Legacy single-byte encodings
     "dos-874": "windows-874",
     "iso-8859-11": "windows-874",
@@ -293,7 +293,8 @@ WHATWG_PYTHON_CODEC_FIXES = {
 }
 
 
-def normalize_encoding_name(name: str) -> str:
+def normalize_encoding_name(name):
+    # type: (str) -> str
     name = name.lower()
     name = COMMON_TYPOS.get(name, name)
     name = EXCEPTIONAL_ENCODINGS.get(name, name)
@@ -307,5 +308,7 @@ def normalize_encoding_name(name: str) -> str:
         if codec_name not in WHATWG_ALIASES:
             name = codec_name
     except LookupError as ex:
-        raise InvalidEncodingNameError("Invalid encoding name: {}".format(name)) from ex
+        raise InvalidEncodingNameError(
+            "Invalid encoding name: {}".format(name)
+        )  # from ex
     return name

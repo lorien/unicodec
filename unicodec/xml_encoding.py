@@ -1,9 +1,10 @@
 """Functions to detect XML document encoding declared in the document itself."""
-from __future__ import annotations
-
 import re
-from contextlib import suppress
-from re import Match
+
+try:
+    from re import Match
+except ImportError:
+    pass
 
 from .errors import InvalidEncodingNameError
 from .normalization import normalize_encoding_name
@@ -19,17 +20,19 @@ RE_BYTES_XML_ENCODING = re.compile(
 )
 
 
-def detect_xml_encoding(data: bytes | str) -> None | str:
-    match: None | Match[str] | Match[bytes]
-    match = (
+def detect_xml_encoding(data):
+    # type: (bytes | str) -> None | str
+    match = (  # type: None | Match[str] | Match[bytes]
         RE_BYTES_XML_ENCODING.search(data)
         if isinstance(data, bytes)
         else RE_XML_ENCODING.search(data)
     )
     if match:
         enc = match.group("xml_prolog")
-        with suppress(InvalidEncodingNameError):
+        try:
             return normalize_encoding_name(
                 enc.decode("latin-1") if isinstance(enc, bytes) else enc
             )
+        except InvalidEncodingNameError:
+            pass
     return None

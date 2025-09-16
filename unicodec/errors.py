@@ -1,4 +1,8 @@
-__all__ = ["InvalidEncodingName", "InvalidEncodingNameError", "UnicodecError"]
+__all__ = [
+    "InvalidEncodingName",
+    "InvalidEncodingNameError",
+    "UnicodecError",
+]
 
 
 class UnicodecError(Exception):

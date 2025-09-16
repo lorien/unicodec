@@ -1,14 +1,10 @@
 """Functions to decode HTML bytes content into unicode string."""
-
 # References:
 # - https://html.spec.whatwg.org/multipage/parsing.html
-from __future__ import annotations
-
-from contextlib import suppress
 from typing import Literal
 
 from . import entities
-from .bom_encoding import detect_bom_encoding
+from .bom_encoding import find_bom_encoding
 from .errors import InvalidEncodingNameError
 from .html_encoding import detect_html_encoding
 from .http_encoding import parse_content_type_header_encoding
@@ -19,34 +15,42 @@ __all__ = ["decode_content", "detect_content_encoding"]
 
 
 def detect_content_encoding(
-    data: bytes,
-    content_type_header: None | str = None,
-    markup: Literal["html", "xml"] = "html",
-) -> str:
-    enc = detect_bom_encoding(data)
+    data,  # type: bytes
+    content_type_header=None,  # type: None | str
+    markup="html",  # type: Literal["html", "xml"]
+):
+    # type: (...) -> str
+    enc = find_bom_encoding(data)
     if enc:
-        with suppress(InvalidEncodingNameError):
+        try:
             return normalize_encoding_name(enc)
+        except InvalidEncoding:
+            pass
     if content_type_header:
         enc = parse_content_type_header_encoding(content_type_header)
         if enc:
-            with suppress(InvalidEncodingNameError):
+            try:
                 return normalize_encoding_name(enc)
+            except InvalidEncodingNameError:
+                pass
     enc = detect_html_encoding(data) if markup == "html" else detect_xml_encoding(data)
     if enc:
-        with suppress(InvalidEncodingNameError):
+        try:
             return normalize_encoding_name(enc)
+        except InvalidEncodingNameError:
+            pass
     return "utf-8"
 
 
 def decode_content(  # pylint: disable=R0917
-    data: bytes | str,
-    decode_entities: bool = True,
-    remove_null_bytes: bool = True,
-    encoding: None | str = None,
-    content_type_header: None | str = None,
-    markup: Literal["html", "xml"] = "html",
-) -> str:
+    data,  # type: bytes | str
+    decode_entities=True,  # type: bool
+    remove_null_bytes=True,  # type: bool
+    encoding=None,  # type: None | str
+    content_type_header=None,  # type: None | str
+    markup="html",  # type: Literal["html", "xml"]
+):
+    # type: (...) -> str
     if isinstance(data, bytes):
         if encoding is None:
             encoding = detect_content_encoding(

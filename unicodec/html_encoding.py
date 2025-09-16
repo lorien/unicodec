@@ -3,11 +3,13 @@
 # References:
 # - https://html.spec.whatwg.org/multipage/parsing.html
 # - https://www.w3.org/International/questions/qa-html-encoding-declarations
-from __future__ import annotations
 
 import re
-from contextlib import suppress
-from re import Match
+
+try:
+    from re import Match
+except ImportError:
+    pass
 
 from .errors import InvalidEncodingNameError
 from .normalization import normalize_encoding_name
@@ -35,9 +37,9 @@ RE_BYTES_HTML_ENCODING = re.compile(
 )
 
 
-def detect_html_encoding(data: bytes | str) -> None | str:
-    match: None | Match[str] | Match[bytes]
-    match = (
+def detect_html_encoding(data):
+    # type (bytes | str) -> None | str
+    match = (  # type: None | Match[str] | Match[bytes]
         RE_BYTES_HTML_ENCODING.search(data)
         if isinstance(data, bytes)
         else RE_HTML_ENCODING.search(data)
@@ -49,8 +51,10 @@ def detect_html_encoding(data: bytes | str) -> None | str:
             or match.group("http_equiv2")
             or match.group("xml_prolog")
         )
-        with suppress(InvalidEncodingNameError):
+        try:
             return normalize_encoding_name(
                 enc.decode("latin-1") if isinstance(enc, bytes) else enc
             )
+        except InvalidEncodingNameError:
+            pass
     return None
