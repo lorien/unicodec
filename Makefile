@@ -1,16 +1,33 @@
-.PHONY: bootstrap venv deps dirs clean pytest test release mypy pylint flake8 bandit check build coverage
+.PHONY: py3 py3-venv py3-deps py2 py2-venv py2-deps dirs clean test release mypy pylint check build coverage ruff
 
 FILES_CHECK_MYPY = unicodec tests
 FILES_CHECK_ALL = $(FILES_CHECK_MYPY)
+PY2_ROOT = /home/user/.pyenv/versions/2.7.18
+PY2_VENV = .venv-py2
+PY3_VENV = .venv-py3
+COVERAGE_TARGET = unicodec
 
-bootstrap: venv deps dirs
+# PY3
+py3: py3-venv py3-deps dirs
 
-venv:
-	virtualenv -p python3 .env
+py3-venv:
+	virtualenv -p python3 $(PY3_VENV)
 
-deps:
-	.env/bin/pip install -r requirements.txt
-	.env/bin/pip install -e .
+py3-deps:
+	$(PY3_VENV)/bin/pip install -r requirements.txt
+	$(PY3_VENV)/bin/pip install .
+
+# PY2
+py2: py2-venv py2-deps dirs
+
+py2-venv:
+	$(PY2_ROOT)/bin/pip install virtualenv
+	$(PY2_ROOT)/bin/virtualenv --python=$(PY2_ROOT)/bin/python2.7 $(PY2_VENV)
+	
+py2-deps:
+	$(PY2_VENV)/bin/pip install -r requirements.txt
+	$(PY2_VENV)/bin/pip install .
+
 
 dirs:
 	if [ ! -e var/run ]; then mkdir -p var/run; fi
@@ -21,11 +38,8 @@ clean:
 	find -name '*.swp' -delete
 	find -name '__pycache__' -delete
 
-pytest:
-	pytest --cov unicodec --cov-report term-missing
-
 test:
-	make check && make pytest && tox -e py38-check
+	pytest --cov $(COVERAGE_TARGET) --cov-report term-missing
 
 release:
 	git push \
@@ -36,30 +50,18 @@ release:
 mypy:
 	mypy --strict $(FILES_CHECK_MYPY)
 
+ruff:
+	ruff check $(FILES_CHECK_ALL)
+
 pylint:
 	pylint -j0 $(FILES_CHECK_ALL)
 
-flake8:
-	flake8 -j auto --max-cognitive-complexity=17 $(FILES_CHECK_ALL)
-
-bandit:
-	bandit -qc pyproject.toml -r $(FILES_CHECK_ALL)
-
-check:
-	echo "mypy" \
-	&& make mypy \
-	&& echo "pylint" \
-	&& make pylint \
-	&& echo "flake8" \
-	&& make flake8 \
-	&& echo "bandit" \
-	&& make bandit
+check: ruff mypy pylint
 
 build:
 	rm -rf *.egg-info
 	rm -rf dist/*
-	python -m build --sdist
-
+	python -m build
 
 coverage:
 	pytest --cov unicodec --cov-report term-missing

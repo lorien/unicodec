@@ -1,33 +1,20 @@
-pip
+# Devel
 bumpversion
-pytest
+pkginfo
 build
-twine
-pyyaml
-pymongo
-runscript
-coverage
-pytest-cov
+setuptools
+wheel
 
-# Code Quality
-bandit[toml]
-flake8
-# flake8-broken-line # DISABLED, DEPENCIES ISSUES
-flake8-bugbear
-# flake8-commas # DISABLED, do not like C816 missing trailing comma in Python 3.6+
-flake8-comprehensions
-flake8-debugger
-flake8-docstrings
-flake8-expression-complexity
-flake8-isort
-flake8-pep585
-flake8-pie
-# flake8-quotes # DISABLED, BREAKS FLAKE8
-flake8-return
-flake8-simplify
-flake8-string-format
-flake8-cognitive-complexity
-mccabe
-mypy
-pep8-naming
-pylint
+# Tests
+coverage
+coveralls
+pytest
+pytest-cov
+pytest-xdist
+
+# Linters and Type Checking
+ruff; python_version >= "3.0"
+mypy; python_version >= "3.0"
+pylint; python_version >= "3.0"
+types-six; python_version >= "3.0"
+yamllint; python_version >= "3.0"
