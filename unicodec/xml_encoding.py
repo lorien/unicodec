@@ -2,7 +2,7 @@
 import re
 
 try:
-    from re import Match
+    from re import Match  # pylint: disable=unused-import
 except ImportError:
     pass
 
@@ -22,7 +22,7 @@ RE_BYTES_XML_ENCODING = re.compile(
 
 def detect_xml_encoding(data):
     # type: (bytes | str) -> None | str
-    match = (  # type: None | Match[str] | Match[bytes]
+    match = (
         RE_BYTES_XML_ENCODING.search(data)
         if isinstance(data, bytes)
         else RE_XML_ENCODING.search(data)

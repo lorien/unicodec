@@ -7,7 +7,7 @@
 import re
 
 try:
-    from re import Match
+    from re import Match  # pylint: disable=unused-import
 except ImportError:
     pass
 
@@ -38,8 +38,8 @@ RE_BYTES_HTML_ENCODING = re.compile(
 
 
 def detect_html_encoding(data):
-    # type (bytes | str) -> None | str
-    match = (  # type: None | Match[str] | Match[bytes]
+    # type: (bytes | str) -> None | str
+    match = (
         RE_BYTES_HTML_ENCODING.search(data)
         if isinstance(data, bytes)
         else RE_HTML_ENCODING.search(data)
@@ -51,6 +51,7 @@ def detect_html_encoding(data):
             or match.group("http_equiv2")
             or match.group("xml_prolog")
         )
+        # pylint: disable=duplicate-code
         try:
             return normalize_encoding_name(
                 enc.decode("latin-1") if isinstance(enc, bytes) else enc

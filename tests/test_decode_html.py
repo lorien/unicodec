@@ -53,5 +53,7 @@ def test_arg_encoding_default():
 def test_arg_encoding_explicit():
     # type: () -> None
     # fmt: off
-    assert decode_content(u"крокодил".encode("cp1251"), encoding="cp1251") == u"крокодил"
+    assert decode_content(u"крокодил".encode("cp1251"), encoding="cp1251") == (
+        u"крокодил"
+    )
     # fmt: on

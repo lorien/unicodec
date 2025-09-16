@@ -3,10 +3,11 @@ __all__ = ["decode_entities"]
 try:
     from html import unescape
 except ImportError:
-    from HTMLParser import HTMLParser
+    from six.moves.html_parser import HTMLParser
 
     html_parser = HTMLParser()
-    unescape = html_parser.unescape
+    # pylint: disable=no-member
+    unescape = html_parser.unescape  # type: ignore[attr-defined]
 
 
 def decode_entities(inp):

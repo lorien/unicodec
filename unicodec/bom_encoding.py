@@ -1,6 +1,6 @@
 import codecs
 
-__all__ = ["detect_bom_encoding", "find_bom"]
+__all__ = ["find_bom_encoding"]
 
 # Order does matter here. UTF-32 BOMs must be preceed UTF-16 BOMs.
 BOM_ENCODINGS = [

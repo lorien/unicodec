@@ -65,10 +65,11 @@ line_length = 88
 #[[tool.mypy.overrides]]
 #module = "procstat"
 #ignore_missing_imports = true
+
 [tool.pylint.main]
 jobs=4
 extension-pkg-whitelist="lxml"
-disable="missing-docstring,broad-except,too-few-public-methods,consider-using-f-string,fixme"
+disable="missing-docstring,broad-except,too-few-public-methods,consider-using-f-string,fixme,redundant-u-string-prefix"
 variable-rgx="[a-z_][a-z0-9_]{1,30}$"
 attr-rgx="[a-z_][a-z0-9_]{1,30}$"
 argument-rgx="[a-z_][a-z0-9_]{1,30}$"
@@ -100,14 +101,16 @@ lint.ignore = [
     #"ANN003", # Missing type annotation for `**kwargs`
     "ANN202", # Missing return type annotation for private function
     #"ANN204", # Missing return type annotation for special method
-    #"B904", # Use `raise from` to specify exception cause
+    "B904", # Use `raise from` to specify exception cause
     #"B904", # Within an `except` clause, raise exceptions with `raise ... from err`
-    #"UP025", # Remove unicode literals from strings
+    "UP025", # Remove unicode literals from strings
     #"UP004", # Class inherits from `object`
     ## or `raise ... from None` to distinguish them from errors in exception handling
-    #"UP009", # UTF-8 encoding declaration is unnecessary
+    "UP009", # UTF-8 encoding declaration is unnecessary
+    "UP012", # Unnecessary UTF-8 `encoding` argument to `encode`
     #"UP035", # Import from `collections.abc` instead
     #"UP013", # Convert from `TypedDict` functional to class syntax
+    "SIM105", # Use `contextlib.suppress
     # py27 compat ends
     "A003", # Class attribute `type` is shadowing a python builtin
     "ANN401", # Dynamically typed expressions (typing.Any) are disallowed

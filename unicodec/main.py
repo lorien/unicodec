@@ -24,7 +24,7 @@ def detect_content_encoding(
     if enc:
         try:
             return normalize_encoding_name(enc)
-        except InvalidEncoding:
+        except InvalidEncodingNameError:
             pass
     if content_type_header:
         enc = parse_content_type_header_encoding(content_type_header)

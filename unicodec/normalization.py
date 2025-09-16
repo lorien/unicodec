@@ -307,8 +307,8 @@ def normalize_encoding_name(name):
         # because unicodec library gives priority to WHATWG names
         if codec_name not in WHATWG_ALIASES:
             name = codec_name
-    except LookupError as ex:
-        raise InvalidEncodingNameError(
+    except LookupError:  # as ex:
+        raise InvalidEncodingNameError(  # pylint: disable=raise-missing-from
             "Invalid encoding name: {}".format(name)
         )  # from ex
     return name
