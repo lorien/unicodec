@@ -1,9 +1,13 @@
-__all__ = ["UnicodecError", "InvalidEncodingName"]
+__all__ = ["InvalidEncodingName", "InvalidEncodingNameError", "UnicodecError"]
 
 
 class UnicodecError(Exception):
     pass
 
 
-class InvalidEncodingName(UnicodecError):
+class InvalidEncodingNameError(UnicodecError):
     pass
+
+
+# Backward-compatibility
+InvalidEncodingName = InvalidEncodingNameError

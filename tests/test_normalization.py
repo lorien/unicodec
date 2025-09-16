@@ -21,7 +21,7 @@ def test_normalize_encoding_empty_string() -> None:
 
 
 @pytest.mark.parametrize(
-    "test_name,correct_name",
+    ("test_name", "correct_name"),
     [
         ("utf8", "utf-8"),
         ("cp1251", "windows-1251"),

@@ -6,7 +6,7 @@ from unicodec.bom_encoding import detect_bom_encoding
 
 
 def test_bom_preservation_while_decoding() -> None:
-    assert (codecs.BOM_UTF8 + "привет".encode("utf-8")).decode(
+    assert (codecs.BOM_UTF8 + "привет".encode()).decode(
         "utf-8"
     ) == codecs.BOM_UTF8.decode("utf-8") + "привет"
 

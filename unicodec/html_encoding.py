@@ -1,16 +1,15 @@
-"""Functions to detect HTML document encoding declared in the document itself.
+"""Functions to detect HTML document encoding declared in the document itself."""
 
-References:
-- https://html.spec.whatwg.org/multipage/parsing.html
-- https://www.w3.org/International/questions/qa-html-encoding-declarations
-"""
+# References:
+# - https://html.spec.whatwg.org/multipage/parsing.html
+# - https://www.w3.org/International/questions/qa-html-encoding-declarations
 from __future__ import annotations
 
 import re
 from contextlib import suppress
 from re import Match
 
-from .errors import InvalidEncodingName
+from .errors import InvalidEncodingNameError
 from .normalization import normalize_encoding_name
 
 __all__ = ["detect_html_encoding"]
@@ -29,9 +28,11 @@ RE_HTML_ENCODING = re.compile(
     r")"
     r"|"
     r"<\?xml \s+ [^>]* encoding \s* = \s* ['\"] (?P<xml_prolog>[-_a-z-0-9]+)",
-    re.X | re.I,
+    re.VERBOSE | re.IGNORECASE,
 )
-RE_BYTES_HTML_ENCODING = re.compile(RE_HTML_ENCODING.pattern.encode(), re.X | re.I)
+RE_BYTES_HTML_ENCODING = re.compile(
+    RE_HTML_ENCODING.pattern.encode(), re.VERBOSE | re.IGNORECASE
+)
 
 
 def detect_html_encoding(data: bytes | str) -> None | str:
@@ -48,7 +49,7 @@ def detect_html_encoding(data: bytes | str) -> None | str:
             or match.group("http_equiv2")
             or match.group("xml_prolog")
         )
-        with suppress(InvalidEncodingName):
+        with suppress(InvalidEncodingNameError):
             return normalize_encoding_name(
                 enc.decode("latin-1") if isinstance(enc, bytes) else enc
             )

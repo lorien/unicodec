@@ -1,12 +1,11 @@
-"""Functions to normalize encoding names to canonical names.
+"""Functions to normalize encoding names to canonical names."""
 
-References:
-- https://encoding.spec.whatwg.org/#names-and-labels
-- https://www.i18nqa.com/debug/table-iso8859-1-vs-windows-1252.html
-"""
+# References:
+# - https://encoding.spec.whatwg.org/#names-and-labels
+# - https://www.i18nqa.com/debug/table-iso8859-1-vs-windows-1252.html
 import codecs
 
-from .errors import InvalidEncodingName
+from .errors import InvalidEncodingNameError
 
 __all__ = ["normalize_encoding_name"]
 
@@ -308,6 +307,5 @@ def normalize_encoding_name(name: str) -> str:
         if codec_name not in WHATWG_ALIASES:
             name = codec_name
     except LookupError as ex:
-        raise InvalidEncodingName("Invalid encoding name: {}".format(name)) from ex
-    else:
-        return name
+        raise InvalidEncodingNameError("Invalid encoding name: {}".format(name)) from ex
+    return name

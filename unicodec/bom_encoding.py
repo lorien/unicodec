@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import codecs
 
-__all__ = ["find_bom", "detect_bom_encoding"]
+__all__ = ["detect_bom_encoding", "find_bom"]
 
 # Order does matter here. UTF-32 BOMs must be preceed UTF-16 BOMs.
 BOM_ENCODING = {

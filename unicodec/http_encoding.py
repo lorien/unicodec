@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 
 RE_CONTENT_TYPE_CHARSET = re.compile(
-    r"charset \s* = \s* ['\"]? ([-_a-z0-9]+)", re.I | re.X
+    r"charset \s* = \s* ['\"]? ([-_a-z0-9]+)", re.IGNORECASE | re.VERBOSE
 )
 
 

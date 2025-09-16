@@ -6,7 +6,7 @@ from unicodec.http_encoding import parse_content_type_header_encoding
 
 
 @pytest.mark.parametrize(
-    "header,encoding",
+    ("header", "encoding"),
     [
         ("", None),
         ("zzzzzz; charset=windows-1252", "windows-1252"),
