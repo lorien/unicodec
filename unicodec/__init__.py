@@ -9,4 +9,4 @@ __all__ = [
     "detect_content_encoding",
     "normalize_encoding_name",
 ]
-__version__ = "0.0.8"
+__version__ = "0.1.0"
