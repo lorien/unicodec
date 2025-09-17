@@ -28,3 +28,27 @@ def test_decode_mixed_valid_invalid_named_entities():
     # fmt: off
     assert decode_entities("&zz; asdf &copy;") == u"&zz; asdf ©"
     # fmt: on
+
+
+def test_control_entity_decimal():
+    # fmt: off
+    assert decode_entities("&#128;") == u"€"
+    # fmt: on
+
+
+def test_control_entity_hex():
+    # fmt: off
+    assert decode_entities("&#x80;") == u"€"
+    # fmt: on
+
+
+def test_control_entity_not_mapped_decimal():
+    # fmt: off
+    assert decode_entities("&#129;") == u"\x81"
+    # fmt: on
+
+
+def test_control_entity_not_mapped_hex():
+    # fmt: off
+    assert decode_entities("&#x81;") == u"\x81"
+    # fmt: on
