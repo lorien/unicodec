@@ -4,7 +4,7 @@
 from typing import Literal
 
 from . import entities
-from .bom_encoding import find_bom_encoding
+from .bom_encoding import BOM_UNICODE, find_bom_encoding
 from .errors import InvalidEncodingNameError
 from .html_encoding import detect_html_encoding
 from .http_encoding import parse_content_type_header_encoding
@@ -20,7 +20,7 @@ def detect_content_encoding(
     markup="html",  # type: Literal["html", "xml"]
 ):
     # type: (...) -> str
-    enc = find_bom_encoding(data)
+    bom, enc = find_bom_encoding(data)
     if enc:
         try:
             return normalize_encoding_name(enc)
@@ -57,6 +57,9 @@ def decode_content(  # pylint: disable=R0917
                 data, content_type_header=content_type_header, markup=markup
             )
         data = data.decode(encoding)
+    # Remove BOM, it might be at the start of decoded unicode text
+    if data.startswith(BOM_UNICODE):
+        data = data[len(BOM_UNICODE) :]
     if remove_null_bytes:
         data = data.replace("\x00", "")
     if decode_entities:
