@@ -49,6 +49,7 @@ def decode_content(  # pylint: disable=R0917
     encoding=None,  # type: None | str
     content_type_header=None,  # type: None | str
     markup="html",  # type: Literal["html", "xml"]
+    errors="strict",  # type: Literal["strict", "ignore", "replace"]
 ):
     # type: (...) -> str
     if isinstance(data, bytes):
@@ -56,7 +57,7 @@ def decode_content(  # pylint: disable=R0917
             encoding = detect_content_encoding(
                 data, content_type_header=content_type_header, markup=markup
             )
-        data = data.decode(encoding)
+        data = data.decode(encoding, errors=errors)
     # Remove BOM, it might be at the start of decoded unicode text
     if data.startswith(BOM_UNICODE):
         data = data[len(BOM_UNICODE) :]
