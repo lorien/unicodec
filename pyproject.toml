@@ -1,6 +1,6 @@
 [project]
 name = "unicodec"
-version = "0.1.1"
+version = "0.1.2"
 
 description = "Library for decoding bytes content into unicode"
 readme = "README.md"
