@@ -20,7 +20,7 @@ def detect_content_encoding(
     markup="html",  # type: Literal["html", "xml"]
 ):
     # type: (...) -> str
-    bom, enc = find_bom_encoding(data)
+    _, enc = find_bom_encoding(data)
     if enc:
         try:
             return normalize_encoding_name(enc)

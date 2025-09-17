@@ -4,7 +4,7 @@ __all__ = ["find_bom_encoding"]
 
 # Order does matter here. UTF-32 BOMs must be preceed UTF-16 BOMs.
 # fmt: off
-BOM_UNICODE = u'\ufeff'
+BOM_UNICODE = u"\ufeff"
 # fmt: on
 BOM_ENCODINGS = [
     (codecs.BOM_UTF32_BE, "utf-32-be"),
